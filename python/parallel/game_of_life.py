@@ -74,7 +74,7 @@ if __name__ == "__main__":
     start = time.perf_counter()
 
     mp.freeze_support()
-    run_simulation(rows=1000, cols=1000, iterations=100, processes=mp.cpu_count(), output_path="python/output/par_states.txt")
+    run_simulation(rows=10, cols=10, iterations=10, processes=mp.cpu_count(), output_path="python/output/par_states.txt")
 
     end = time.perf_counter()
 

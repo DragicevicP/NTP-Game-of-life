@@ -53,7 +53,7 @@ def run_simulation(rows: int, cols: int, iterations: int, output_path: str):
 if __name__ == "__main__":
     start = time.perf_counter()
 
-    run_simulation(rows=1000, cols=1000, iterations=100, output_path="python/output/seq_states.txt")
+    run_simulation(rows=10, cols=10, iterations=10, output_path="python/output/seq_states.txt")
 
     end = time.perf_counter()
 
