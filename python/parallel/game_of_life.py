@@ -2,6 +2,10 @@ import random
 import time
 from typing import List, Tuple
 import multiprocessing as mp
+from typing import Optional
+from typing import Any
+
+
 
 from python.common.game_logic import (
     create_random_grid,
@@ -11,7 +15,13 @@ from python.common.game_logic import (
 
 Grid = List[List[int]]
 
-def new_generation_parallel(grid: Grid, processes: int):
+GLOBAL_GRID = None
+
+def init_worker(grid: Grid):
+    global GLOBAL_GRID
+    GLOBAL_GRID = grid
+
+def new_generation_parallel(grid: Grid, pool: Any, processes: int):
     rows = len(grid)
     chunk_size = rows // processes
     tasks = []
@@ -21,11 +31,10 @@ def new_generation_parallel(grid: Grid, processes: int):
         end = start + chunk_size
         if i == processes - 1:
             end = rows
-        tasks.append((grid, start, end))
+        tasks.append((start, end))
         start = end
 
-    with mp.Pool(processes=processes) as pool:
-        results = pool.map(compute_rows, tasks)
+    results = pool.map(compute_rows, tasks)
 
     new_grid = []
     for part in results:
@@ -34,9 +43,10 @@ def new_generation_parallel(grid: Grid, processes: int):
     return new_grid
 
 
-def compute_rows(args: Tuple[Grid, int, int]):
-   
-    grid, start_row, end_row = args
+def compute_rows(args: Tuple[int, int]):
+    start_row, end_row = args
+    grid = GLOBAL_GRID
+
     cols = len(grid[0])
 
     result = []
@@ -58,15 +68,25 @@ def compute_rows(args: Tuple[Grid, int, int]):
     return result
     
 
-def run_simulation(rows: int, cols: int, iterations: int, processes: int, output_path: str):
+def run_simulation(rows: int, cols: int, iterations: int, processes: int, output_path: Optional[str] = None):
     grid = create_random_grid(rows, cols)
 
-    with open(output_path, "w") as file:
-        save_grid(file, grid, 0)
+    if output_path is not None:
+        
+        with open(output_path, "w") as file:
+            save_grid(file, grid, 0)
 
-        for it in range(1, iterations + 1):
-            grid = new_generation_parallel(grid, processes)
-            save_grid(file, grid, it)
+            with mp.Pool(processes=processes, initializer=init_worker, initargs=(grid,)) as pool:
+                for it in range(1, iterations + 1):
+                    grid = new_generation_parallel(grid, pool, processes)
+                    init_worker(grid)
+                    save_grid(file, grid, it)
+    else:
+        
+        with mp.Pool(processes=processes, initializer=init_worker, initargs=(grid,)) as pool:
+            for _ in range(1, iterations + 1):
+                grid = new_generation_parallel(grid, pool, processes)
+                init_worker(grid)
 
 
 

@@ -24,8 +24,8 @@ def count_alive_neighbors(grid: Grid, row: int, col: int):
     cols = len(grid[0])
     alive = 0
 
-    for neighbor_rows in [-1, 0, 1]:
-        for neighbor_cols in [-1, 0, 1]:
+    for neighbor_rows in (-1, 0, 1):
+        for neighbor_cols in (-1, 0, 1):
             if neighbor_rows == 0 and neighbor_cols == 0:
                 continue
 
