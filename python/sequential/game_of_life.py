@@ -1,6 +1,6 @@
 import random
 import time
-from typing import List
+from typing import List, Optional
 from python.common.game_logic import (
     create_random_grid,
     count_alive_neighbors,
@@ -38,9 +38,14 @@ def new_generation(grid: Grid):
     return new_grid
 
 
-def run_simulation(rows: int, cols: int, iterations: int, output_path: str):
+def run_simulation(rows: int, cols: int, iterations: int, output_path: Optional[str] = None):
  
     grid = create_random_grid(rows, cols)
+
+    if output_path is None:
+        for _ in range(1, iterations + 1):
+            grid = new_generation(grid)
+        return
 
     with open(output_path, "w") as file:
         save_grid(file, grid, 0)

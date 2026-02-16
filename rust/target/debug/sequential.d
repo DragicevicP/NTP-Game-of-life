@@ -1,0 +1,1 @@
+C:\Users\Petar\Desktop\ntp\NTP-Game-of-life\rust\target\debug\sequential.exe: C:\Users\Petar\Desktop\ntp\NTP-Game-of-life\rust\src\bin\sequential.rs C:\Users\Petar\Desktop\ntp\NTP-Game-of-life\rust\src\common.rs
