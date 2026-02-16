@@ -1,0 +1,1 @@
+C:\Users\Petar\Desktop\ntp\NTP-Game-of-life\rust\target\debug\game_of_life_parallel.exe: C:\Users\Petar\Desktop\ntp\NTP-Game-of-life\rust\src\bin\game_of_life_parallel.rs C:\Users\Petar\Desktop\ntp\NTP-Game-of-life\rust\src\common.rs C:\Users\Petar\Desktop\ntp\NTP-Game-of-life\rust\src\parallel.rs
